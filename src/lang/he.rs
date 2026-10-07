@@ -798,6 +798,10 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("support_file_done_tip", "ההגדרות הוחזרו למצב הרגיל. אפשר לסגור."),
         ("support_file_reverted_tip", "נמצאה תמיכה קודמת שלא הסתיימה. ההגדרות הוחזרו למצב הרגיל."),
         ("support_file_portable_tip", "RustDesk נפתח עכשיו.\n\nמסור לטכנאי את המספר שמופיע תחת ID.\nבסיום פשוט סגור את חלון RustDesk."),
-        ("support_file_download_failed_tip", "ההורדה נכשלה. בדוק שיש חיבור לאינטרנט ונסה שוב.")
+        ("support_file_download_failed_tip", "ההורדה נכשלה. בדוק שיש חיבור לאינטרנט ונסה שוב."),
+        ("End support", "סיים תמיכה"),
+        ("support_file_window_title", "תמיכה מרחוק"),
+        ("support_file_window_tip", "הטכנאי מחובר דרך השרת שלו.\nאפשר למזער את החלון הזה.\nבסיום התמיכה לחץ \"סיים תמיכה\"."),
+        ("support_file_end_confirm_tip", "לסיים את התמיכה? הטכנאי ינותק.")
     ].iter().cloned().collect();
 }

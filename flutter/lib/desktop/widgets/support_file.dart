@@ -56,7 +56,53 @@ String _psMessage(String text) {
       ? ",'OK','Information','Button1',([System.Windows.Forms.MessageBoxOptions]::RtlReading -bor [System.Windows.Forms.MessageBoxOptions]::RightAlign)"
       : ",'OK','Information'";
   final ps = "Add-Type -AssemblyName System.Windows.Forms;"
-      "[System.Windows.Forms.MessageBox]::Show('${text.replaceAll("'", "''")}','RustDesk'$options) | Out-Null";
+      "[System.Windows.Forms.MessageBox]::Show('${_psQuote(text)}','RustDesk'$options) | Out-Null";
+  return _psEncoded(ps);
+}
+
+String _psQuote(String text) => text.replaceAll("'", "''");
+
+/// A small window that stays open while support is active. It can be
+/// minimized, and ending support (button or X) asks for confirmation so a
+/// stray click does not end the session.
+String _psSupportWindow() {
+  final title = _psQuote(translate('support_file_window_title'));
+  final tip = _psQuote(translate('support_file_window_tip'));
+  final end = _psQuote(translate('End support'));
+  final confirm = _psQuote(translate('support_file_end_confirm_tip'));
+  final rtl = RegExp(r'[֐-ࣿ]').hasMatch(tip);
+  final ps = [
+    'Add-Type -AssemblyName System.Windows.Forms',
+    'Add-Type -AssemblyName System.Drawing',
+    '[System.Windows.Forms.Application]::EnableVisualStyles()',
+    '\$f = New-Object System.Windows.Forms.Form',
+    "\$f.Text = '$title'",
+    '\$f.Width = 440; \$f.Height = 210',
+    "\$f.FormBorderStyle = 'FixedSingle'; \$f.MaximizeBox = \$false; \$f.MinimizeBox = \$true",
+    "\$f.StartPosition = 'CenterScreen'",
+    if (rtl) "\$f.RightToLeft = 'Yes'; \$f.RightToLeftLayout = \$true",
+    '\$l = New-Object System.Windows.Forms.Label',
+    "\$l.Text = '$tip'; \$l.Dock = 'Fill'",
+    '\$l.Padding = New-Object System.Windows.Forms.Padding(12)',
+    "\$l.Font = New-Object System.Drawing.Font('Segoe UI', 11)",
+    '\$b = New-Object System.Windows.Forms.Button',
+    "\$b.Text = '$end'; \$b.Dock = 'Bottom'; \$b.Height = 42",
+    "\$b.Font = New-Object System.Drawing.Font('Segoe UI', 11)",
+    '\$f.Controls.Add(\$l); \$f.Controls.Add(\$b)',
+    '\$script:done = \$false',
+    '\$b.Add_Click({ \$f.Close() })',
+    '\$f.Add_FormClosing({ param(\$s, \$e)',
+    "  if (\$script:done -or \$e.CloseReason -ne 'UserClosing') { return }",
+    "  \$r = [System.Windows.Forms.MessageBox]::Show('$confirm', '$title', 'YesNo', 'Question', 'Button2'"
+        "${rtl ? ', ([System.Windows.Forms.MessageBoxOptions]::RtlReading -bor [System.Windows.Forms.MessageBoxOptions]::RightAlign)' : ''})",
+    "  if (\$r -eq 'Yes') { \$script:done = \$true } else { \$e.Cancel = \$true }",
+    '})',
+    '[void]\$f.ShowDialog()',
+  ].join('\n');
+  return _psEncoded(ps);
+}
+
+String _psEncoded(String ps) {
   final units = ps.codeUnits;
   final bytes = Uint8List(units.length * 2);
   for (var i = 0; i < units.length; i++) {
@@ -67,12 +113,13 @@ String _psMessage(String text) {
 }
 
 /// Windows batch file for the person being helped:
-/// - RustDesk installed: switches it to [host] until they press OK, then back
-///   to the public server. Running the file again also reverts.
+/// - RustDesk installed: switches it to [host] while a support window is open;
+///   ending support switches back to the public server and restarts the
+///   service, which drops the session. Running the file again also reverts.
 /// - Not installed: runs the official portable RustDesk with [host] taken
 ///   from its file name, which changes nothing on the computer.
 String buildSupportBat(String host, String key) {
-  final active = _psMessage(translate('support_file_active_tip'));
+  final active = _psSupportWindow();
   final done = _psMessage(translate('support_file_done_tip'));
   final reverted = _psMessage(translate('support_file_reverted_tip'));
   final portable = _psMessage(translate('support_file_portable_tip'));
@@ -86,7 +133,7 @@ String buildSupportBat(String host, String key) {
     '',
     'net session >nul 2>&1',
     'if errorlevel 1 (',
-    '  powershell -NoProfile -Command "Start-Process -FilePath \'%~f0\' -Verb RunAs"',
+    '  powershell -NoProfile -Command "Start-Process -FilePath \'%~f0\' -Verb RunAs -WindowStyle Hidden"',
     '  exit /b',
     ')',
     '',
@@ -103,6 +150,8 @@ String buildSupportBat(String host, String key) {
     'start "" "%RD%"',
     active,
     'call :revert',
+    'net stop RustDesk >nul 2>&1',
+    'net start RustDesk >nul 2>&1',
     done,
     'exit /b',
     '',

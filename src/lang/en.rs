@@ -284,6 +284,9 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("support_file_done_tip", "Settings were returned to normal. You can close this."),
         ("support_file_reverted_tip", "An unfinished support session was found. Settings were returned to normal."),
         ("support_file_portable_tip", "RustDesk is opening now.\n\nGive the technician the number shown under ID.\nWhen done, just close the RustDesk window."),
-        ("support_file_download_failed_tip", "Download failed. Check the internet connection and try again.")
+        ("support_file_download_failed_tip", "Download failed. Check the internet connection and try again."),
+        ("support_file_window_title", "Remote support"),
+        ("support_file_window_tip", "The technician is connected through their server.\nYou can minimize this window.\nWhen support is over, press \"End support\"."),
+        ("support_file_end_confirm_tip", "End support? The technician will be disconnected.")
     ].iter().cloned().collect();
 }

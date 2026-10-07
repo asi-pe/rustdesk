@@ -798,7 +798,11 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("support_file_done_tip", ""),
         ("support_file_reverted_tip", ""),
         ("support_file_portable_tip", ""),
-        ("support_file_download_failed_tip", "")
+        ("support_file_download_failed_tip", ""),
+        ("End support", ""),
+        ("support_file_window_title", ""),
+        ("support_file_window_tip", ""),
+        ("support_file_end_confirm_tip", "")
     ].iter().cloned().collect();
 }
 
