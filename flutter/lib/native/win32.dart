@@ -48,7 +48,7 @@ int getWindowsCursorSize_() {
   final regGetValue = DynamicLibrary.open('advapi32.dll').lookupFunction<
       Int32 Function(IntPtr, Pointer<Utf16>, Pointer<Utf16>, Uint32,
           Pointer<Uint32>, Pointer<Uint32>, Pointer<Uint32>),
-      int Function(IntPtr, Pointer<Utf16>, Pointer<Utf16>, int, Pointer<Uint32>,
+      int Function(int, Pointer<Utf16>, Pointer<Utf16>, int, Pointer<Uint32>,
           Pointer<Uint32>, Pointer<Uint32>)>('RegGetValueW');
   const hkeyCurrentUser = 0x80000001;
   const rrfRtRegDword = 0x00000010;
