@@ -18,6 +18,7 @@ import '../../models/model.dart';
 import '../../models/input_model.dart';
 import '../../models/platform_model.dart';
 import '../../common/shared_state.dart';
+import '../../common/cursor_size.dart';
 import '../../utils/image.dart';
 import '../widgets/remote_toolbar.dart';
 import '../widgets/kb_layout_type_chooser.dart';
@@ -1114,7 +1115,8 @@ class _ImagePaintState extends State<ImagePaint> {
           double getCursorScale() {
             var c = Provider.of<CanvasModel>(context);
             if (isDesktop) {
-              return _getDesktopCursorScale(c, dpr);
+              return _getDesktopCursorScale(c, dpr) *
+                  remoteCursorSizeMultiplier();
             } else {
               return zoomCursor.value || isViewOriginal() ? s : 1.0;
             }
@@ -1486,6 +1488,13 @@ class CursorPaint extends StatelessWidget {
       x = m.x - hotx + cx / c.scale;
       y = m.y - hoty + cy / c.scale;
       scale = c.scale;
+    }
+    final sizeMultiplier = remoteCursorSizeMultiplier();
+    if (sizeMultiplier != 1.0) {
+      // Keep the hotspot on the remote pointer position while enlarging.
+      scale *= sizeMultiplier;
+      x = (m.x * c.scale + cx) / scale - hotx;
+      y = (m.y * c.scale + cy) / scale - hoty;
     }
 
     return CustomPaint(

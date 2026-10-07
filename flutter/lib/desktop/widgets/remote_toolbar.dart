@@ -20,6 +20,7 @@ import '../../common.dart';
 import '../../models/model.dart';
 import '../../models/platform_model.dart';
 import '../../common/shared_state.dart';
+import '../../common/cursor_size.dart';
 import './popup_menu.dart';
 import './kb_layout_type_chooser.dart';
 import 'package:flutter_hbb/utils/scale.dart';
@@ -1749,6 +1750,7 @@ class _DisplayMenuState extends State<_DisplayMenu> {
             child: Text(translate("Virtual display")),
           ),
         if (ffi.connType == ConnType.defaultConn) cursorToggles(),
+        if (ffi.connType == ConnType.defaultConn) cursorSize(),
         Divider(),
         toggles(),
       ];
@@ -1995,6 +1997,26 @@ class _DisplayMenuState extends State<_DisplayMenu> {
                 .toList(),
           ]);
         });
+  }
+
+  cursorSize() {
+    return Obx(() => _SubmenuButton(
+          ffi: widget.ffi,
+          child: Text(translate('Remote cursor size')),
+          menuChildren: remoteCursorSizeChoices()
+              .map((e) => RdoMenuButton<String>(
+                  value: e,
+                  groupValue: remoteCursorSize.value,
+                  onChanged: (value) {
+                    if (value == null) return;
+                    setRemoteCursorSize(value);
+                  },
+                  child: Text(e == kRemoteCursorSizeSystem
+                      ? translate('System')
+                      : '$e%'),
+                  ffi: ffi))
+              .toList(),
+        ));
   }
 
   toggles() {

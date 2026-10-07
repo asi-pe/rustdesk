@@ -20,6 +20,7 @@ import '../../common/widgets/peer_tab_page.dart';
 import '../../common/widgets/autocomplete.dart';
 import '../../models/platform_model.dart';
 import '../../desktop/widgets/material_mod_popup_menu.dart' as mod_menu;
+import '../../desktop/widgets/server_switch.dart';
 
 class OnlineStatusWidget extends StatefulWidget {
   const OnlineStatusWidget({Key? key, this.onSvcStatusChanged})
@@ -134,6 +135,11 @@ class _OnlineStatusWidgetState extends State<OnlineStatusWidget> {
             // ready && public
             // No need to show the guide if is custom client.
             if (!isIncomingOnly) setupServerWidget(),
+            if (!isIncomingOnly) ...[
+              const Spacer(),
+              ServerSwitchWidget(isUsingPublicServer: _svcIsUsingPublicServer)
+                  .marginOnly(right: em),
+            ],
           ],
         );
 
