@@ -791,6 +791,13 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Yellow", ""),
         ("Green", ""),
         ("Blue", ""),
-        ("Pink", "")
+        ("Pink", ""),
+        ("Create support file", ""),
+        ("support_file_no_private_server_tip", ""),
+        ("support_file_active_tip", ""),
+        ("support_file_done_tip", ""),
+        ("support_file_reverted_tip", ""),
+        ("support_file_portable_tip", ""),
+        ("support_file_download_failed_tip", "")
     ].iter().cloned().collect();
 }

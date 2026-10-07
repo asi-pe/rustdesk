@@ -791,6 +791,13 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Yellow", "צהוב"),
         ("Green", "ירוק"),
         ("Blue", "כחול"),
-        ("Pink", "ורוד")
+        ("Pink", "ורוד"),
+        ("Create support file", "צור קובץ תמיכה"),
+        ("support_file_no_private_server_tip", "יש להגדיר קודם שרת פרטי (ID/Relay Server), ואז ליצור את קובץ התמיכה."),
+        ("support_file_active_tip", "התמיכה מחוברת לשרת של הטכנאי.\n\nאל תלחץ אישור עד שהטכנאי מסיים.\nבסיום התמיכה לחץ אישור, והמחשב יחזור להגדרות הרגילות."),
+        ("support_file_done_tip", "ההגדרות הוחזרו למצב הרגיל. אפשר לסגור."),
+        ("support_file_reverted_tip", "נמצאה תמיכה קודמת שלא הסתיימה. ההגדרות הוחזרו למצב הרגיל."),
+        ("support_file_portable_tip", "RustDesk נפתח עכשיו.\n\nמסור לטכנאי את המספר שמופיע תחת ID.\nבסיום פשוט סגור את חלון RustDesk."),
+        ("support_file_download_failed_tip", "ההורדה נכשלה. בדוק שיש חיבור לאינטרנט ונסה שוב.")
     ].iter().cloned().collect();
 }

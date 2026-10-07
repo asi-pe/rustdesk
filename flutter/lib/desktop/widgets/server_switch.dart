@@ -55,6 +55,20 @@ Future<ServerConfig> _currentServerConfig() async {
   return ServerConfig.fromOptions(options);
 }
 
+/// The private server: the one in use, otherwise the one saved by the switch.
+Future<ServerConfig?> privateServerConfig() async {
+  final current = await _currentServerConfig();
+  if (current.idServer.isNotEmpty) return current;
+  final saved = bind.mainGetLocalOption(key: kOptionSavedPrivateServer);
+  if (saved.isEmpty) return null;
+  try {
+    final config = ServerConfig.decode(saved);
+    return config.idServer.isEmpty ? null : config;
+  } catch (_) {
+    return null;
+  }
+}
+
 Future<void> _switchToPublicServer() async {
   final current = await _currentServerConfig();
   if (current.idServer.isNotEmpty) {

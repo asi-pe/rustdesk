@@ -21,6 +21,7 @@ import '../../common/widgets/autocomplete.dart';
 import '../../models/platform_model.dart';
 import '../../desktop/widgets/material_mod_popup_menu.dart' as mod_menu;
 import '../../desktop/widgets/server_switch.dart';
+import '../../desktop/widgets/support_file.dart';
 
 class OnlineStatusWidget extends StatefulWidget {
   const OnlineStatusWidget({Key? key, this.onSvcStatusChanged})
@@ -137,6 +138,7 @@ class _OnlineStatusWidgetState extends State<OnlineStatusWidget> {
             if (!isIncomingOnly) setupServerWidget(),
             if (!isIncomingOnly) ...[
               const Spacer(),
+              const SupportFileButton(),
               ServerSwitchWidget(isUsingPublicServer: _svcIsUsingPublicServer)
                   .marginOnly(right: em),
             ],
