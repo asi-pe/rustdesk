@@ -1751,6 +1751,7 @@ class _DisplayMenuState extends State<_DisplayMenu> {
           ),
         if (ffi.connType == ConnType.defaultConn) cursorToggles(),
         if (ffi.connType == ConnType.defaultConn) cursorSize(),
+        if (ffi.connType == ConnType.defaultConn) cursorColor(),
         Divider(),
         toggles(),
       ];
@@ -2014,6 +2015,33 @@ class _DisplayMenuState extends State<_DisplayMenu> {
                   child: Text(e == kRemoteCursorSizeSystem
                       ? translate('System')
                       : '$e%'),
+                  ffi: ffi))
+              .toList(),
+        ));
+  }
+
+  cursorColor() {
+    return Obx(() => _SubmenuButton(
+          ffi: widget.ffi,
+          child: Text(translate('Remote cursor color')),
+          menuChildren: kRemoteCursorColors
+              .map((e) => RdoMenuButton<String>(
+                  value: e.$1,
+                  groupValue: remoteCursorColor.value,
+                  onChanged: (value) {
+                    if (value == null) return;
+                    setRemoteCursorColor(value);
+                  },
+                  child: Row(children: [
+                    Container(
+                      width: 12,
+                      height: 12,
+                      decoration: BoxDecoration(
+                          color: Color(e.$3),
+                          border: Border.all(color: Colors.grey)),
+                    ).marginOnly(right: 8),
+                    Text(translate(e.$2)),
+                  ]),
                   ffi: ffi))
               .toList(),
         ));

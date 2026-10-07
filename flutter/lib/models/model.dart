@@ -40,6 +40,7 @@ import 'package:vector_math/vector_math.dart' show Vector2;
 import '../common.dart';
 import '../utils/image.dart' as img;
 import '../common/widgets/dialog.dart';
+import '../common/cursor_size.dart';
 import 'input_model.dart';
 import 'platform_model.dart';
 import 'package:flutter_hbb/utils/scale.dart';
@@ -3528,6 +3529,7 @@ class CursorModel with ChangeNotifier {
       int height, Uint8List rgba) async {
     final generation = _generation;
     if (_unavailable == id) _unavailable = null;
+    rgba = recolorRemoteCursor(rgba);
     final hotx = hotxInt.toDouble();
     final hoty = hotyInt.toDouble();
     final image = await img.decodeImageFromPixels(

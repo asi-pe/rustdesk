@@ -784,6 +784,13 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Remote cursor size", ""),
         ("System", ""),
         ("Public server", ""),
-        ("Private server", "")
+        ("Private server", ""),
+        ("Remote cursor color", ""),
+        ("Red", ""),
+        ("Orange", ""),
+        ("Yellow", ""),
+        ("Green", ""),
+        ("Blue", ""),
+        ("Pink", "")
     ].iter().cloned().collect();
 }
